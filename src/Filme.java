@@ -99,7 +99,20 @@ public class Filme {
         return encontrado;
     }
 
-    public Filme consultar(Filme filme) {
+    public Filme consultar(Filme filme) throws IOException {
+
+        try (
+                FileReader fr = new FileReader("filme.txt");
+                BufferedReader reader = new BufferedReader(fr)) {
+                String linha;
+            while((linha = reader.readLine()) != null){
+               String[] dados = linha.split(";");
+               if(this.idFilme == Integer.parseInt(dados[0])) {
+//                   buscadoFilme = new Filme(dados[0], Integer.parseInt(dados[1]));
+               }
+            }
+        }
+
         return filme;
     }
 

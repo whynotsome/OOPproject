@@ -1,13 +1,15 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Genero {
     private int id;
     private String descricao;
     private String status;
     public ArrayList<Genero> subgenero;
+
+    public Genero() {
+    }
 
     public Genero(int id, String descricao, String status) {
         this.id = id;
@@ -43,21 +45,46 @@ public class Genero {
     public boolean cadastrar(Genero genero) throws IOException {
         FileWriter fw = new FileWriter("genero.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(this.id + ";" + this.descricao + ";A");
+        bw.write(genero.id + ";" + genero.descricao + ";" + genero.status);
+        bw.newLine();
+        bw.close();
         return true;
     }
 
-    public boolean editar(Genero genero) {
-        return true;
-    }
+    public boolean editar(Genero genero, int id) throws IOException {
+        File arquivo = new File("genero.txt");
+        List<String> linhas = new ArrayList<>();
+        boolean encontrado = false;
 
-    public Genero consultar(Genero genero) {
-        return genero;
-    }
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
 
-    public ArrayList<Genero> listar(Genero genero) {
-        return subgenero;
+                if (Integer.parseInt(dados[0]) == id) {
+                    linha = genero.id + ";" + genero.descricao + ";" + genero.status + ";";
+                    encontrado = true;
+                }
+                linhas.add(linha);
+            }
+        }
+        if(encontrado) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
+                for (String linha : linhas)  {
+                    bw.write(linha);
+                    bw.newLine();
+                }
+            }
+        }
+        return encontrado;
     }
-    
-    
+        public Genero consultar (Genero genero, int id){
+            return genero;
+        }
+
+        public ArrayList<Genero> listar (Genero genero){
+            return subgenero;
+        }
+
+
 }

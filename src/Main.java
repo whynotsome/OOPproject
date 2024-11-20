@@ -68,12 +68,15 @@ public class Main {
                                 scanner.nextLine();
                                 System.out.print("Digite o título do filme: ");
                                 String filmeTitulo = scanner.nextLine();
+                                System.out.print("Digite o genero do filme: ");
+                                String generoFilme = scanner.nextLine();
+                                Genero genero = new Genero(0, generoFilme,"");
                                 System.out.print("Digite a classificação do filme (ex: 1-18): ");
                                 int filmeClassificacao = scanner.nextInt();
                                 scanner.nextLine();
                                 System.out.print("Digite o status do filme (ativo/inativo): ");
                                 String filmeStatus = scanner.nextLine();
-                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, comedia, filmeStatus);
+                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero, filmeStatus);
                                 filme.cadastrar(filme);
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
@@ -85,7 +88,15 @@ public class Main {
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
                             case 6:
-
+                                System.out.println("Digite o id do genero: ");
+                                int generoId = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("Digite a descricao do genero:");
+                                String generoDescricao = scanner.nextLine();
+                                System.out.println("Digite o status do genero: ");
+                                String generoStatus = scanner.nextLine();
+                                Genero generoGenero = new Genero(generoId, generoDescricao, generoStatus);
+                                generoGenero.cadastrar(generoGenero);
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
                             case 7:
@@ -158,8 +169,22 @@ public class Main {
                                 String filmeStatus = scanner.nextLine();
                                 Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero, filmeStatus);
                                 filme.editar(filme, filmeId);
+                                System.out.println("Editado com sucesso!");
                             case 5:
                             case 6:
+                                System.out.println("Digite o id do genero que voce quer alterar: ");
+                                int generoIdVelho = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.print("Digite o novo id do genero: ");
+                                int generoIdNovo = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.print("Digite a descricao do genero: ");
+                                String generoDescricao = scanner.nextLine();
+                                System.out.print("Digite o status do genero: ");
+                                String generoStatus = scanner.nextLine();
+                                Genero generoEditado = new Genero(generoIdNovo, generoDescricao, generoStatus);
+                                generoEditado.editar(generoEditado, generoIdVelho);
+                                System.out.println("Editado com sucesso!");
                             case 7:
                             case 8:
                             case 9:
