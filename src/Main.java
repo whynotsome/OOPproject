@@ -62,7 +62,6 @@ public class Main {
                                 break;
 
                             case 3:
-                                Genero comedia = new Genero(1, "comedia","ativo");
                                 System.out.print("Digite o id do filme: ");
                                 int filmeId = scanner.nextInt();
                                 scanner.nextLine();
@@ -71,13 +70,15 @@ public class Main {
                                 System.out.print("Digite o genero do filme: ");
                                 String generoFilme = scanner.nextLine();
                                 Genero genero = new Genero(0, generoFilme,"");
+                                genero.cadastrar();
+//                                genero.buscar();
                                 System.out.print("Digite a classificação do filme (ex: 1-18): ");
                                 int filmeClassificacao = scanner.nextInt();
                                 scanner.nextLine();
                                 System.out.print("Digite o status do filme (ativo/inativo): ");
                                 String filmeStatus = scanner.nextLine();
                                 Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero, filmeStatus);
-                                filme.cadastrar(filme);
+                                filme.cadastrar();
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
                             case 4:
@@ -96,7 +97,7 @@ public class Main {
                                 System.out.println("Digite o status do genero: ");
                                 String generoStatus = scanner.nextLine();
                                 Genero generoGenero = new Genero(generoId, generoDescricao, generoStatus);
-                                generoGenero.cadastrar(generoGenero);
+                                generoGenero.cadastrar();
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
                             case 7:
@@ -276,6 +277,9 @@ public class Main {
                             case 1:
                             case 2:
                             case 3:
+                                Filme filme = new Filme();
+                                filme.listar();
+                                break;
                             case 4:
                             case 5:
                             case 6:
@@ -308,7 +312,6 @@ public class Main {
                     System.out.println("Opcao invalida colega, tenta de novo");
             }
         }
-
         scanner.close();
     }
 }

@@ -42,10 +42,10 @@ public class Genero {
         return status;
     }
 
-    public boolean cadastrar(Genero genero) throws IOException {
+    public boolean cadastrar() throws IOException {
         FileWriter fw = new FileWriter("genero.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(genero.id + ";" + genero.descricao + ";" + genero.status);
+        bw.write(this.id + ";" + this.descricao + ";" + this.status);
         bw.newLine();
         bw.close();
         return true;

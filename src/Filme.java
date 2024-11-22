@@ -10,7 +10,9 @@ public class Filme {
     private String status;
     public ArrayList<Filme> filmes;
 
-    public Filme() {}
+    public Filme() {
+        this.filmes = new ArrayList<>();
+    }
 
     public Filme(int idFilme, String titulo, int classificacao, Genero genero, String status) {
         this.idFilme = idFilme;
@@ -61,11 +63,12 @@ public class Filme {
         return titulo;
     }
 
-    public boolean cadastrar(Filme filme) throws IOException {
+    public boolean cadastrar() throws IOException {
         FileWriter fw = new FileWriter("filme.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(filme.idFilme + ";" + filme.titulo + ";" + filme.classificacao + ";" + filme.genero.getId() + ";" + filme.status + ";");
+        bw.write(this.idFilme + ";" + this.titulo + ";" + this.classificacao + ";" + this.genero.getId() + ";" + this.status + ";");
         bw.newLine();
+        filmes.add(this);
         bw.close();
         return true;
     }
@@ -80,7 +83,7 @@ public class Filme {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if(Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == id) {
                     linha = filme.idFilme + ";" + filme.titulo + ";" + filme.classificacao + ";" + filme.genero + ";" + filme.status;
                     encontrado = true;
                 }
@@ -88,9 +91,9 @@ public class Filme {
             }
         }
 
-        if(encontrado) {
+        if (encontrado) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
-                for (String linha : linhas)  {
+                for (String linha : linhas) {
                     bw.write(linha);
                     bw.newLine();
                 }
@@ -100,24 +103,47 @@ public class Filme {
     }
 
     public Filme consultar(Filme filme) throws IOException {
+//        Filme buscadoFilme = this;
+//        try (
+//                FileReader fr = new FileReader("filme.txt");
+//                BufferedReader reader = new BufferedReader(fr)) {
+//                String linha;
+//            while((linha = reader.readLine()) != null){
+//               String[] dados = linha.split(";");
+//               if(filme.idFilme == Integer.parseInt(dados[0])) {
+//                   buscadoFilme = new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), filme.genero, dados[4]);
+//                    break;
+//               }
+//            }
+//            return buscadoFilme;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return buscadoFilme;
+//        }
+        return filme;
+    }
 
+    public ArrayList<Filme> listar() {
         try (
                 FileReader fr = new FileReader("filme.txt");
                 BufferedReader reader = new BufferedReader(fr)) {
                 String linha;
             while((linha = reader.readLine()) != null){
                String[] dados = linha.split(";");
-               if(this.idFilme == Integer.parseInt(dados[0])) {
-//                   buscadoFilme = new Filme(dados[0], Integer.parseInt(dados[1]));
-               }
+                   Filme filme = new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), new Genero(), dados[4]);
+                   filmes.add(filme);
             }
+
+            System.out.println("Filmes listados:");
+            for (Filme filme : filmes) {
+                System.out.println(filme.getTitulo());
+            }
+            System.out.println("-------------------------");
+
+            return this.filmes;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return this.filmes;
         }
-
-        return filme;
     }
-
-    public ArrayList<Filme> listar(Filme filme) {
-        return filmes;
-    }
-
 }
