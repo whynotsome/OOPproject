@@ -102,25 +102,24 @@ public class Filme {
         return encontrado;
     }
 
-    public Filme consultar(Filme filme) throws IOException {
-//        Filme buscadoFilme = this;
-//        try (
-//                FileReader fr = new FileReader("filme.txt");
-//                BufferedReader reader = new BufferedReader(fr)) {
-//                String linha;
-//            while((linha = reader.readLine()) != null){
-//               String[] dados = linha.split(";");
-//               if(filme.idFilme == Integer.parseInt(dados[0])) {
-//                   buscadoFilme = new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), filme.genero, dados[4]);
-//                    break;
-//               }
-//            }
-//            return buscadoFilme;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return buscadoFilme;
-//        }
-        return filme;
+    public Filme consultar(int id) throws IOException {
+        try (
+                FileReader fr = new FileReader("filme.txt");
+                BufferedReader reader = new BufferedReader(fr)
+        ) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (id == Integer.parseInt(dados[0])) {
+                    return new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), genero, dados[4]);
+                }
+            }
+            System.out.println("Filme não encontrado.");
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public ArrayList<Filme> listar() {
@@ -130,7 +129,7 @@ public class Filme {
                 String linha;
             while((linha = reader.readLine()) != null){
                String[] dados = linha.split(";");
-                   Filme filme = new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), new Genero(), dados[4]);
+                   Filme filme = new Filme(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]), genero, dados[4]);
                    filmes.add(filme);
             }
 

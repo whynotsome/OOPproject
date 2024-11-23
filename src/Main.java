@@ -71,7 +71,6 @@ public class Main {
                                 String generoFilme = scanner.nextLine();
                                 Genero genero = new Genero(0, generoFilme,"");
                                 genero.cadastrar();
-//                                genero.buscar();
                                 System.out.print("Digite a classificação do filme (ex: 1-18): ");
                                 int filmeClassificacao = scanner.nextInt();
                                 scanner.nextLine();
@@ -230,9 +229,35 @@ public class Main {
                             case 1:
                             case 2:
                             case 3:
+                                System.out.println("Qual filme você quer consultar? Insira o ID:");
+                                int filmeParaBuscar = scanner.nextInt();
+                                scanner.nextLine();
+                                Filme filme = new Filme();
+                                    Filme resultado = filme.consultar(filmeParaBuscar);
+                                    if (resultado != null) {
+                                        System.out.println("Filme consultado:");
+                                        System.out.println("Título: " + resultado.getTitulo());
+                                        System.out.println("-------------------------");
+                                    } else {
+                                        System.out.println("Nenhum filme encontrado com o ID informado.");
+                                    }
+                                break;
                             case 4:
                             case 5:
                             case 6:
+                                System.out.println("Qual genero você quer consultar? Insira o ID:");
+                                int generoParaBuscar = scanner.nextInt();
+                                scanner.nextLine();
+                                Genero genero = new Genero();
+                                Genero resultadoGenero = genero.consultar(generoParaBuscar);
+                                if (resultadoGenero != null) {
+                                    System.out.println("Genero consultado:");
+                                    System.out.println("Descricao: " + resultadoGenero.getDescricao());
+                                    System.out.println("-------------------------");
+                                } else {
+                                    System.out.println("Nenhum filme encontrado com o ID informado.");
+                                }
+                                break;
                             case 7:
                             case 8:
                             case 9:
@@ -283,6 +308,9 @@ public class Main {
                             case 4:
                             case 5:
                             case 6:
+                                Genero genero = new Genero();
+                                genero.listar();
+                                break;
                             case 7:
                             case 8:
                             case 9:

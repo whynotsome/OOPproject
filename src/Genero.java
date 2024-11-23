@@ -9,6 +9,8 @@ public class Genero {
     public ArrayList<Genero> subgenero;
 
     public Genero() {
+        this.subgenero = new ArrayList<>();
+
     }
 
     public Genero(int id, String descricao, String status) {
@@ -78,12 +80,48 @@ public class Genero {
         }
         return encontrado;
     }
-        public Genero consultar (Genero genero, int id){
-            return genero;
+        public Genero consultar (int id) throws IOException {
+            try (
+                    FileReader fr = new FileReader("genero.txt");
+                    BufferedReader reader = new BufferedReader(fr)
+            ) {
+                String linha;
+                while ((linha = reader.readLine()) != null) {
+                    String[] dados = linha.split(";");
+                    if (id == Integer.parseInt(dados[0])) {
+                        return new Genero(Integer.parseInt(dados[0]), dados[1], dados[2]);
+                    }
+                }
+                System.out.println("Filme não encontrado.");
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw e;
+            }
         }
 
-        public ArrayList<Genero> listar (Genero genero){
-            return subgenero;
+        public ArrayList<Genero> listar(){
+            try (
+                    FileReader fr = new FileReader("genero.txt");
+                    BufferedReader reader = new BufferedReader(fr)) {
+                String linha;
+                while((linha = reader.readLine()) != null){
+                    String[] dados = linha.split(";");
+                    Genero genero = new Genero(Integer.parseInt(dados[0]), dados[1], dados[2]);
+                    subgenero.add(genero);
+                }
+
+                System.out.println("Generos listados:");
+                for (Genero genero : subgenero) {
+                    System.out.println(genero.getDescricao());
+                }
+                System.out.println("-------------------------");
+
+                return this.subgenero;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return this.subgenero;
+            }
         }
 
 
