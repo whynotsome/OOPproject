@@ -73,7 +73,7 @@ public class Filme {
         return true;
     }
 
-    public boolean editar(Filme filme, int id) throws IOException {
+    public boolean editar(int id) throws IOException {
         File arquivo = new File("filme.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -84,7 +84,7 @@ public class Filme {
                 String[] dados = linha.split(";");
 
                 if (Integer.parseInt(dados[0]) == id) {
-                    linha = filme.idFilme + ";" + filme.titulo + ";" + filme.classificacao + ";" + filme.genero + ";" + filme.status;
+                    linha = this.idFilme + ";" + this.titulo + ";" + this.classificacao + ";" + this.genero.getDescricao() + ";" + this.status;
                     encontrado = true;
                 }
                 linhas.add(linha);

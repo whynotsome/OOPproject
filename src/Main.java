@@ -3,20 +3,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        Scanner scan = new Scanner(System.in);
-//        File arquivo = new File("arquivoTeste.txt");
-//
-//        try {
-//            if(!arquivo.exists()){
-//                System.out.println("arquivo criado com sucesso");
-//                arquivo.createNewFile();
-//
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Nao foi possivel criar o arquivo");
-//        }
-//
-//        scan.close();
 
         Scanner scanner = new Scanner(System.in);
         boolean isMenuRodando = true;
@@ -58,10 +44,22 @@ public class Main {
                                 break;
 
                             case 2:
+                                scanner.nextLine(); // Garante que o buffer esteja limpo antes de começar
+                                System.out.println("Digite o cpf do ator: ");
+                                String atorCpf = scanner.nextLine(); // Lê o CPF
+                                System.out.println("Digite o nome do ator: ");
+                                String atorNome = scanner.nextLine(); // Lê o nome
+                                System.out.println("Digite o email do ator: ");
+                                String atorEmail = scanner.nextLine(); // Lê o email
+                                System.out.println("Digite o registro do ator: ");
+                                int atorRegistro = scanner.nextInt(); // Lê o registro como número
+                                scanner.nextLine(); // Limpa o buffer depois do nextInt
+                                Ator ator = new Ator(atorCpf, atorNome, atorEmail, atorRegistro); // Cria o objeto Ator
+                                ator.cadastrar(); // Salva o ator no arquivo
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
 
-                            case 3:
+                                case 3:
                                 System.out.print("Digite o id do filme: ");
                                 int filmeId = scanner.nextInt();
                                 scanner.nextLine();
@@ -154,10 +152,21 @@ public class Main {
                         switch (subOpcao) {
                             case 1:
                             case 2:
+                                System.out.println("Digite o registro do ator que voce quer alterar: ");
+                                int atorId = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("Digite o novo cpf do ator: ");
+                                String atorCpf = scanner.nextLine();
+                                System.out.println("Digite o novo nome do ator: ");
+                                String atorNome = scanner.nextLine();
+                                System.out.println("Digite o novo email do ator: ");
+                                String atorEmail = scanner.nextLine();
+                                Ator ator = new Ator(atorCpf, atorNome, atorEmail, atorId);
+                                ator.editar(atorId);
+                                System.out.println("Editado com sucesso!");
+                                break;
                             case 3:
-                                Genero genero = new Genero(1, "comedia","ativo");
-                                genero.subgenero.add(genero);
-                                System.out.print("Digite o id do filme: ");
+                                System.out.print("Digite o id do filme que voce quer alterar: ");
                                 int filmeId = scanner.nextInt();
                                 scanner.nextLine();
                                 System.out.print("Digite o título do filme: ");
@@ -167,9 +176,25 @@ public class Main {
                                 scanner.nextLine();
                                 System.out.print("Digite o status do filme (ativo/inativo): ");
                                 String filmeStatus = scanner.nextLine();
-                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero, filmeStatus);
-                                filme.editar(filme, filmeId);
+                                System.out.print("Digite o id do genero do filme: ");
+                                int generoFilme = scanner.nextInt();
+                                scanner.nextLine();
+                                Genero genero = new Genero();
+                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero.consultar(generoFilme), filmeStatus);
+                                filme.editar(filmeId);
                                 System.out.println("Editado com sucesso!");
+                                System.out.println("Crie um novo Genero.");
+                                System.out.println("Digite o id do genero: ");
+                                int generoFilmeId = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("Digite a descricao do genero:");
+                                String generoFilmeDescricao = scanner.nextLine();
+                                System.out.println("Digite o status do genero: ");
+                                String generoFilmeStatus = scanner.nextLine();
+                                Genero novoGenero = new Genero(generoFilmeId, generoFilmeDescricao, generoFilmeStatus);
+                                novoGenero.cadastrar();
+                                System.out.println("Cadastrado com sucesso!");
+                                break;
                             case 5:
                             case 6:
                                 System.out.println("Digite o id do genero que voce quer alterar: ");
@@ -183,8 +208,9 @@ public class Main {
                                 System.out.print("Digite o status do genero: ");
                                 String generoStatus = scanner.nextLine();
                                 Genero generoEditado = new Genero(generoIdNovo, generoDescricao, generoStatus);
-                                generoEditado.editar(generoEditado, generoIdVelho);
+                                generoEditado.editar(generoIdVelho);
                                 System.out.println("Editado com sucesso!");
+                                break;
                             case 7:
                             case 8:
                             case 9:
@@ -301,6 +327,9 @@ public class Main {
                         switch (subOpcao) {
                             case 1:
                             case 2:
+                                Ator ator = new Ator();
+                                ator.listar();
+                                break;
                             case 3:
                                 Filme filme = new Filme();
                                 filme.listar();

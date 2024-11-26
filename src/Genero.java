@@ -53,7 +53,7 @@ public class Genero {
         return true;
     }
 
-    public boolean editar(Genero genero, int id) throws IOException {
+    public boolean editar(int id) throws IOException {
         File arquivo = new File("genero.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -64,7 +64,7 @@ public class Genero {
                 String[] dados = linha.split(";");
 
                 if (Integer.parseInt(dados[0]) == id) {
-                    linha = genero.id + ";" + genero.descricao + ";" + genero.status + ";";
+                    linha = this.id + ";" + this.descricao + ";" + this.status + ";";
                     encontrado = true;
                 }
                 linhas.add(linha);

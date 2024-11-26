@@ -1,4 +1,6 @@
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FilmeAtor {
     private int idFilmeAtor;
@@ -48,6 +50,10 @@ public class FilmeAtor {
         return principal;
     }
 
+    public FilmeAtor() {
+        this.filmeAtores = new ArrayList<>();
+    }
+
     public FilmeAtor(int idFilmeAtor, Ator ator, Filme filme, String personagem, boolean principal) {
         this.idFilmeAtor = idFilmeAtor;
         this.ator = ator;
@@ -57,5 +63,86 @@ public class FilmeAtor {
         this.filmeAtores = new ArrayList<>();
     }
 
-    
+    public boolean cadastrar() throws IOException {
+        FileWriter fw = new FileWriter("filmeator.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.idFilmeAtor + ";" + this.ator + ";" + this.filme + ";" + this.personagem + ";" + this.principal + ";");
+        bw.newLine();
+        bw.close();
+        return true;
+    }
+
+    public boolean editar(int id) throws IOException {
+        File arquivo = new File("filmeator.txt");
+        List<String> linhas = new ArrayList<>();
+        boolean encontrado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
+
+                if (Integer.parseInt(dados[0]) == id) {
+                    linha = this.idFilmeAtor + ";" + this.ator + ";" + this.filme + ";" + this.personagem + ";" + this.principal + ";";
+                    encontrado = true;
+                }
+                linhas.add(linha);
+            }
+        }
+        if (encontrado) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
+                for (String linha : linhas) {
+                    bw.write(linha);
+                    bw.newLine();
+                }
+            }
+        }
+        return encontrado;
+    }
+
+    public FilmeAtor consultar(int id) throws IOException {
+        try (
+                FileReader fr = new FileReader("filmeator.txt");
+                BufferedReader reader = new BufferedReader(fr)
+        ) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (id == Integer.parseInt(dados[0])) {
+                    return new FilmeAtor(Integer.parseInt(dados[0]), this.ator, this.filme, dados[3], this.principal);
+                }
+            }
+            System.out.println("FilmeAtor não encontrado.");
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public ArrayList<FilmeAtor> listar() throws IOException{
+        try (
+                FileReader fr = new FileReader("filmeator.txt");
+                BufferedReader reader = new BufferedReader(fr)) {
+            String linha;
+            while((linha = reader.readLine()) != null){
+                String[] dados = linha.split(";");
+                FilmeAtor assento = new FilmeAtor(Integer.parseInt(dados[0]), this.ator, this.filme, dados[3], this.principal);
+                filmeAtores.add(assento);
+            }
+
+            System.out.println("Atores listados:");
+            for (FilmeAtor filmeAtorLista : filmeAtores) {
+                System.out.println(filmeAtorLista.getAtor().getNome());
+            }
+            System.out.println("-------------------------");
+
+            return this.filmeAtores;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return this.filmeAtores;
+        }
+    }
+
 }
+

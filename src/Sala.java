@@ -1,5 +1,6 @@
+import java.io.*;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class Sala {
@@ -40,6 +41,10 @@ public class Sala {
     public String getStatus() {
         return status;
     }
+
+    public Sala() {
+        this.salas = new ArrayList<>();
+    }
     
     public Sala(int idSala, int capacidadeSala, String descricao, String status) {
         this.idSala = idSala;
@@ -47,6 +52,87 @@ public class Sala {
         this.descricao = descricao;
         this.status = status;
         this.salas = new ArrayList<>();
+    }
+
+    public boolean cadastrar() throws IOException {
+        FileWriter fw = new FileWriter("sala.txt", true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.idSala + ";" + this.capacidadeSala + ";" + this.descricao + ";" + this.status + ";");
+        bw.newLine();
+        bw.close();
+        return true;
+    }
+
+    public boolean editar(int id) throws IOException {
+        File arquivo = new File("sala.txt");
+        List<String> linhas = new ArrayList<>();
+        boolean encontrado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(";");
+
+                if (Integer.parseInt(dados[0]) == id) {
+                    linha = this.idSala + ";" + this.capacidadeSala + ";" + this.descricao + ";" + this.status + ";";
+                    encontrado = true;
+                }
+                linhas.add(linha);
+            }
+        }
+        if (encontrado) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
+                for (String linha : linhas) {
+                    bw.write(linha);
+                    bw.newLine();
+                }
+            }
+        }
+        return encontrado;
+    }
+
+    public Sala consultar(int id) throws IOException {
+        try (
+                FileReader fr = new FileReader("sala.txt");
+                BufferedReader reader = new BufferedReader(fr)
+        ) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (id == Integer.parseInt(dados[0])) {
+                    return new Sala(Integer.parseInt(dados[0]), Integer.parseInt(dados[1]), dados[2], dados[3]);
+                }
+            }
+            System.out.println("Sala não encontrado.");
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public ArrayList<Sala> listar() throws IOException{
+        try (
+                FileReader fr = new FileReader("sala.txt");
+                BufferedReader reader = new BufferedReader(fr)) {
+            String linha;
+            while((linha = reader.readLine()) != null){
+                String[] dados = linha.split(";");
+                Sala sala = new  Sala(Integer.parseInt(dados[0]), Integer.parseInt(dados[1]), dados[2], dados[3]);
+                salas.add(sala);
+            }
+
+            System.out.println("Salas listadas:");
+            for (Sala salasLista : salas) {
+                System.out.println(salasLista.idSala);
+            }
+            System.out.println("-------------------------");
+
+            return this.salas;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return this.salas;
+        }
     }
     
 

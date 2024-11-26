@@ -3,6 +3,8 @@ public abstract class Pessoa {
     private String nome;
     private String email;
 
+    public Pessoa(){}
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
