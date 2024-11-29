@@ -23,10 +23,6 @@ public class Assento {
     public TipoAssento getTipoAssento() {
         return tipoAssento;
     }
-
-    public Assento() {
-        this.assentos = new ArrayList<>();
-    }
     
     public Assento(int idAssento, TipoAssento tipoAssento) {
         this.idAssento = idAssento;
@@ -34,16 +30,30 @@ public class Assento {
         this.assentos = new ArrayList<>();
     }
 
+
     public boolean cadastrar() throws IOException {
-        FileWriter fw = new FileWriter("assento.txt", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(this.idAssento + ";" + this.tipoAssento + ";");
-        bw.newLine();
-        bw.close();
-        return true;
+       try (
+               FileWriter fw = new FileWriter("assento.txt", true);
+               BufferedWriter bw = new BufferedWriter(fw);
+               ) {
+           if(consultar() != null) {
+               int id = this.getMaxId()+1;
+               bw.write(this.idAssento + ";" + this.tipoAssento + ";");
+               bw.newLine();
+               System.out.println("Dados de assento gravados com sucesso");
+               return true;
+           } else {
+               System.out.println("Assento já existe");
+               return false;
+           }
+        } catch (IOException e) {
+           e.printStackTrace();
+           throw e;
+       }
     }
 
-    public boolean editar(int id) throws IOException {
+
+    public boolean editar() throws IOException {
         File arquivo = new File("assento.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -53,7 +63,7 @@ public class Assento {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idAssento) {
                     linha = this.idAssento + ";" + this.tipoAssento + ";";
                     encontrado = true;
                 }
@@ -72,7 +82,7 @@ public class Assento {
         return encontrado;
     }
 
-    public Assento consultar(int id) throws IOException {
+    public Assento consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("assento.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -80,7 +90,7 @@ public class Assento {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.idAssento == Integer.parseInt(dados[0])) {
                     return new Assento(Integer.parseInt(dados[0]), this.tipoAssento);
                 }
             }
@@ -90,6 +100,10 @@ public class Assento {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
 
     public ArrayList<Assento> listar() throws IOException{

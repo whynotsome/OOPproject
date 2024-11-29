@@ -45,15 +45,29 @@ public class Genero {
     }
 
     public boolean cadastrar() throws IOException {
-        FileWriter fw = new FileWriter("genero.txt", true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(this.id + ";" + this.descricao + ";" + this.status);
-        bw.newLine();
-        bw.close();
-        return true;
+        try (
+                FileWriter fw = new FileWriter("genero.txt", true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                ) {
+            if (consultar() == null) {
+                int id = this.getMaxId()+1;
+                bw.write( id + ";" + this.descricao + ";" + this.status);
+                bw.newLine();
+                bw.close();
+                System.out.println("Dados de Genero Cadastrados!");
+                return true;
+            } else {
+                System.out.println("Genero ja cadastrado");
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("genero.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -80,7 +94,12 @@ public class Genero {
         }
         return encontrado;
     }
-        public Genero consultar (int id) throws IOException {
+
+    public int getMaxId() {
+        return this.listar().size();
+    }
+
+        public Genero consultar () throws IOException {
             try (
                     FileReader fr = new FileReader("genero.txt");
                     BufferedReader reader = new BufferedReader(fr)
@@ -92,7 +111,6 @@ public class Genero {
                         return new Genero(Integer.parseInt(dados[0]), dados[1], dados[2]);
                     }
                 }
-                System.out.println("Filme não encontrado.");
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -110,12 +128,6 @@ public class Genero {
                     Genero genero = new Genero(Integer.parseInt(dados[0]), dados[1], dados[2]);
                     subgenero.add(genero);
                 }
-
-                System.out.println("Generos listados:");
-                for (Genero genero : subgenero) {
-                    System.out.println(genero.getDescricao());
-                }
-                System.out.println("-------------------------");
 
                 return this.subgenero;
             } catch (IOException e) {

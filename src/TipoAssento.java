@@ -33,8 +33,8 @@ public class TipoAssento {
         return status;
     }
 
-    public TipoAssento() {
-        this.tipoAssentos = new ArrayList<>();
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
     
     public TipoAssento(int idTipoAssento, String descricao, String status) {
@@ -53,7 +53,7 @@ public class TipoAssento {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("tipoassento.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -63,7 +63,7 @@ public class TipoAssento {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idTipoAssento) {
                     linha = this.idTipoAssento + ";" + this.descricao + ";" + this.status + ";";
                     encontrado = true;
                 }
@@ -81,7 +81,7 @@ public class TipoAssento {
         return encontrado;
     }
 
-    public TipoAssento consultar(int id) throws IOException {
+    public TipoAssento consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("sala.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -89,7 +89,7 @@ public class TipoAssento {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (idTipoAssento == Integer.parseInt(dados[0])) {
                     return new TipoAssento(Integer.parseInt(dados[0]), dados[1], dados[2]);
                 }
             }

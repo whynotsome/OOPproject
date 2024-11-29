@@ -42,8 +42,8 @@ public class Ingresso {
         return valorPago;
     }
 
-    public Ingresso() {
-        this.ingressos = new ArrayList<>();
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
     
     public Ingresso(int idIngresso, double valorPago, SalaAssento salaAssento, Sessao sessao) {
@@ -63,7 +63,7 @@ public class Ingresso {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("ingresso.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -73,7 +73,7 @@ public class Ingresso {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idIngresso) {
                     linha = this.idIngresso + ";" + this.valorPago + ";" + this.salaAssento + ";" + this.sessao + ";";
                     encontrado = true;
                 }
@@ -91,7 +91,7 @@ public class Ingresso {
         return encontrado;
     }
 
-    public Ingresso consultar(int id) throws IOException {
+    public Ingresso consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("ingresso.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -99,7 +99,7 @@ public class Ingresso {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.idIngresso == Integer.parseInt(dados[0])) {
                     return new Ingresso(Integer.parseInt(dados[0]), Double.parseDouble(dados[1]), this.salaAssento, this.sessao);
                 }
             }

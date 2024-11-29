@@ -23,9 +23,9 @@ public class Funcionario extends Pessoa {
     public Date getHorarioTrabalho() {
         return horarioTrabalho;
     }
-    
-    public Funcionario() {
-        this.funcionarios = new ArrayList<>();
+
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
     
     public Funcionario(String cpf, String nome, String email,int matricula,Date horarioTrabalho) {
@@ -44,7 +44,7 @@ public class Funcionario extends Pessoa {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("funcionario.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -54,7 +54,7 @@ public class Funcionario extends Pessoa {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[3]) == this.matricula) {
                     linha = this.getCpf() + ";" + this.getNome() + ";" + this.getEmail() + ";" + this.matricula + ";" + this.horarioTrabalho + ";";
                     encontrado = true;
                 }
@@ -72,7 +72,7 @@ public class Funcionario extends Pessoa {
         return encontrado;
     }
 
-    public Funcionario consultar(int id) throws IOException {
+    public Funcionario consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("funcionario.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -80,7 +80,7 @@ public class Funcionario extends Pessoa {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.matricula == Integer.parseInt(dados[3])) {
                     return new Funcionario(dados[0], dados[1], dados[2], this.matricula, this.horarioTrabalho);
                 }
             }

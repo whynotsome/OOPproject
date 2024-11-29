@@ -50,8 +50,8 @@ public class FilmeAtor {
         return principal;
     }
 
-    public FilmeAtor() {
-        this.filmeAtores = new ArrayList<>();
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
 
     public FilmeAtor(int idFilmeAtor, Ator ator, Filme filme, String personagem, boolean principal) {
@@ -72,7 +72,7 @@ public class FilmeAtor {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("filmeator.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -82,7 +82,7 @@ public class FilmeAtor {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idFilmeAtor) {
                     linha = this.idFilmeAtor + ";" + this.ator + ";" + this.filme + ";" + this.personagem + ";" + this.principal + ";";
                     encontrado = true;
                 }
@@ -100,7 +100,7 @@ public class FilmeAtor {
         return encontrado;
     }
 
-    public FilmeAtor consultar(int id) throws IOException {
+    public FilmeAtor consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("filmeator.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -108,7 +108,7 @@ public class FilmeAtor {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.idFilmeAtor == Integer.parseInt(dados[0])) {
                     return new FilmeAtor(Integer.parseInt(dados[0]), this.ator, this.filme, dados[3], this.principal);
                 }
             }

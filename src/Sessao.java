@@ -60,8 +60,8 @@ public class Sessao {
         return status;
     }
 
-    public Sessao() {
-        this.sessoes = new ArrayList<>();
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
 
     public Sessao(int idSessao, int dataHoraessao, Filme filme, Sala sala, Funcionario funcionario, String status) {
@@ -83,7 +83,7 @@ public class Sessao {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("sessao.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -93,7 +93,7 @@ public class Sessao {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idSessao) {
                     linha = this.idSessao + ";" + this.dataHoraessao + ";" + this.filme + ";" + this.sala + ";" + this.funcionario + ";" + this.status + ";";
                     encontrado = true;
                 }
@@ -111,7 +111,7 @@ public class Sessao {
         return encontrado;
     }
 
-    public Sessao consultar(int id) throws IOException {
+    public Sessao consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("sala.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -119,7 +119,7 @@ public class Sessao {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.idSessao == Integer.parseInt(dados[0])) {
                     return new Sessao(Integer.parseInt(dados[0]), Integer.parseInt(dados[1]), this.filme, this.sala, this.funcionario, this.status);
                 }
             }

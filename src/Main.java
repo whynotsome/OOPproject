@@ -40,44 +40,54 @@ public class Main {
                         int subOpcao = scanner.nextInt();
                         switch (subOpcao) {
                             case 1:
+                                System.out.println("Digite o id do assento: ");
+                                int assentoId = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("Digite o id do sala: ");
+                                int salaId = scanner.nextInt();
+                                scanner.nextLine();
+
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
 
                             case 2:
-                                scanner.nextLine(); // Garante que o buffer esteja limpo antes de começar
+                                scanner.nextLine();
                                 System.out.println("Digite o cpf do ator: ");
-                                String atorCpf = scanner.nextLine(); // Lê o CPF
+                                String atorCpf = scanner.nextLine();
                                 System.out.println("Digite o nome do ator: ");
-                                String atorNome = scanner.nextLine(); // Lê o nome
+                                String atorNome = scanner.nextLine();
                                 System.out.println("Digite o email do ator: ");
-                                String atorEmail = scanner.nextLine(); // Lê o email
+                                String atorEmail = scanner.nextLine();
                                 System.out.println("Digite o registro do ator: ");
-                                int atorRegistro = scanner.nextInt(); // Lê o registro como número
-                                scanner.nextLine(); // Limpa o buffer depois do nextInt
-                                Ator ator = new Ator(atorCpf, atorNome, atorEmail, atorRegistro); // Cria o objeto Ator
-                                ator.cadastrar(); // Salva o ator no arquivo
+                                int atorRegistro = scanner.nextInt();
+                                scanner.nextLine();
+                                Ator ator = new Ator(atorCpf, atorNome, atorEmail, atorRegistro);
+                                ator.cadastrar();
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
-
                                 case 3:
-                                System.out.print("Digite o id do filme: ");
-                                int filmeId = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Digite o título do filme: ");
-                                String filmeTitulo = scanner.nextLine();
-                                System.out.print("Digite o genero do filme: ");
-                                String generoFilme = scanner.nextLine();
-                                Genero genero = new Genero(0, generoFilme,"");
-                                genero.cadastrar();
-                                System.out.print("Digite a classificação do filme (ex: 1-18): ");
-                                int filmeClassificacao = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Digite o status do filme (ativo/inativo): ");
-                                String filmeStatus = scanner.nextLine();
-                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero, filmeStatus);
-                                filme.cadastrar();
-                                System.out.println("Cadastrado com sucesso!");
-                                break;
+                                    scanner.nextLine();
+                                    System.out.print("Digite o título do filme: ");
+                                    String filmeTitulo = scanner.nextLine();
+                                    System.out.print("Digite a classificação do filme (ex: 1-18): ");
+                                    int filmeClassificacao = scanner.nextInt();
+                                    scanner.nextLine();
+                                    System.out.print("Digite o genero do filme: ");
+                                    String generoFilme = scanner.nextLine();
+                                    System.out.print("Digite o status do filme (ativo/inativo): ");
+                                    String filmeStatus = scanner.nextLine();
+                                    Genero genero = new Genero(0, generoFilme,"A");
+                                    if (genero.consultar() == null) {
+                                        genero.cadastrar();
+
+
+                                        Filme filme = new Filme(0, filmeTitulo, filmeClassificacao, genero, filmeStatus);
+                                        filme.cadastrar();
+                                    } else {
+                                        System.out.println("Genero ja cadastrado");
+                                    }
+
+                                    break;
                             case 4:
 
                                 System.out.println("Cadastrado com sucesso!");
@@ -86,16 +96,13 @@ public class Main {
                                 System.out.println("Cadastrado com sucesso!");
                                 break;
                             case 6:
-                                System.out.println("Digite o id do genero: ");
-                                int generoId = scanner.nextInt();
-                                scanner.nextLine();
                                 System.out.println("Digite a descricao do genero:");
                                 String generoDescricao = scanner.nextLine();
                                 System.out.println("Digite o status do genero: ");
                                 String generoStatus = scanner.nextLine();
-                                Genero generoGenero = new Genero(generoId, generoDescricao, generoStatus);
-                                generoGenero.cadastrar();
-                                System.out.println("Cadastrado com sucesso!");
+                                Genero generoGenero = new Genero(0 , generoDescricao, generoStatus);
+                                if (generoGenero.cadastrar()) System.out.println("Cadastrado com sucesso!");
+                                System.out.println("Erro ao cadastrar");
                                 break;
                             case 7:
 
@@ -162,7 +169,7 @@ public class Main {
                                 System.out.println("Digite o novo email do ator: ");
                                 String atorEmail = scanner.nextLine();
                                 Ator ator = new Ator(atorCpf, atorNome, atorEmail, atorId);
-                                ator.editar(atorId);
+                                ator.editar();
                                 System.out.println("Editado com sucesso!");
                                 break;
                             case 3:
@@ -180,8 +187,8 @@ public class Main {
                                 int generoFilme = scanner.nextInt();
                                 scanner.nextLine();
                                 Genero genero = new Genero();
-                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero.consultar(generoFilme), filmeStatus);
-                                filme.editar(filmeId);
+                                Filme filme = new Filme(filmeId, filmeTitulo, filmeClassificacao, genero.consultar(), filmeStatus);
+                                filme.editar();
                                 System.out.println("Editado com sucesso!");
                                 System.out.println("Crie um novo Genero.");
                                 System.out.println("Digite o id do genero: ");
@@ -208,7 +215,7 @@ public class Main {
                                 System.out.print("Digite o status do genero: ");
                                 String generoStatus = scanner.nextLine();
                                 Genero generoEditado = new Genero(generoIdNovo, generoDescricao, generoStatus);
-                                generoEditado.editar(generoIdVelho);
+                                generoEditado.editar();
                                 System.out.println("Editado com sucesso!");
                                 break;
                             case 7:
@@ -259,7 +266,7 @@ public class Main {
                                 int filmeParaBuscar = scanner.nextInt();
                                 scanner.nextLine();
                                 Filme filme = new Filme();
-                                    Filme resultado = filme.consultar(filmeParaBuscar);
+                                    Filme resultado = filme.consultar();
                                     if (resultado != null) {
                                         System.out.println("Filme consultado:");
                                         System.out.println("Título: " + resultado.getTitulo());
@@ -275,7 +282,7 @@ public class Main {
                                 int generoParaBuscar = scanner.nextInt();
                                 scanner.nextLine();
                                 Genero genero = new Genero();
-                                Genero resultadoGenero = genero.consultar(generoParaBuscar);
+                                Genero resultadoGenero = genero.consultar();
                                 if (resultadoGenero != null) {
                                     System.out.println("Genero consultado:");
                                     System.out.println("Descricao: " + resultadoGenero.getDescricao());
@@ -327,8 +334,8 @@ public class Main {
                         switch (subOpcao) {
                             case 1:
                             case 2:
-                                Ator ator = new Ator();
-                                ator.listar();
+                                // Ator ator = new Ator();
+//                              // ator.listar();
                                 break;
                             case 3:
                                 Filme filme = new Filme();

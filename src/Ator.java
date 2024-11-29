@@ -13,9 +13,9 @@ public class Ator extends Pessoa{
     public int getRegistro() {
         return registro;
     }
-
-    public Ator() {
-        this.atores = new ArrayList<>();
+    
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
 
     public Ator(String cpf, String nome, String email, int registro) {
@@ -34,7 +34,7 @@ public class Ator extends Pessoa{
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("ator.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -44,7 +44,7 @@ public class Ator extends Pessoa{
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[3]) == id) {
+                if (Integer.parseInt(dados[3]) == this.registro) {
                     linha = this.getCpf() + ";" + this.getNome() + ";" + this.getEmail() + ";" + this.getRegistro() + ";";
                     encontrado = true;
                 }
@@ -63,7 +63,7 @@ public class Ator extends Pessoa{
         return encontrado;
     }
 
-    public Ator consultar(int id) throws IOException{
+    public Ator consultar() throws IOException{
         try (
                 FileReader fr = new FileReader("ator.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -71,7 +71,7 @@ public class Ator extends Pessoa{
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.registro == Integer.parseInt(dados[0])) {
                     return new Ator(dados[0], dados[1], dados[2], Integer.parseInt(dados[3]));
                 }
             }

@@ -42,8 +42,8 @@ public class Sala {
         return status;
     }
 
-    public Sala() {
-        this.salas = new ArrayList<>();
+    public int getMaxId() throws IOException {
+        return this.listar().size();
     }
     
     public Sala(int idSala, int capacidadeSala, String descricao, String status) {
@@ -63,7 +63,7 @@ public class Sala {
         return true;
     }
 
-    public boolean editar(int id) throws IOException {
+    public boolean editar() throws IOException {
         File arquivo = new File("sala.txt");
         List<String> linhas = new ArrayList<>();
         boolean encontrado = false;
@@ -73,7 +73,7 @@ public class Sala {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
 
-                if (Integer.parseInt(dados[0]) == id) {
+                if (Integer.parseInt(dados[0]) == this.idSala) {
                     linha = this.idSala + ";" + this.capacidadeSala + ";" + this.descricao + ";" + this.status + ";";
                     encontrado = true;
                 }
@@ -91,7 +91,7 @@ public class Sala {
         return encontrado;
     }
 
-    public Sala consultar(int id) throws IOException {
+    public Sala consultar() throws IOException {
         try (
                 FileReader fr = new FileReader("sala.txt");
                 BufferedReader reader = new BufferedReader(fr)
@@ -99,7 +99,7 @@ public class Sala {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if (id == Integer.parseInt(dados[0])) {
+                if (this.idSala == Integer.parseInt(dados[0])) {
                     return new Sala(Integer.parseInt(dados[0]), Integer.parseInt(dados[1]), dados[2], dados[3]);
                 }
             }
